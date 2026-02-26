@@ -3720,6 +3720,170 @@ This endpoint is OpenAI Whisper API compatible.
 }
 ```
 
+### Upload media
+
+- **Method:** `POST`
+- **Path:** `/upload`
+- **Tags:** media.pollinations.ai
+
+Upload an image, audio, or video file. Supports multipart/form-data, raw binary, or base64 JSON. Returns a content-addressed hash URL. Duplicate files return the existing hash.
+
+#### Responses
+
+##### Status: 200 Upload successful
+
+###### Content-Type: application/json
+
+- **`contentType` (required)**
+
+  `string`
+
+- **`duplicate` (required)**
+
+  `boolean`
+
+- **`id` (required)**
+
+  `string`
+
+- **`size` (required)**
+
+  `integer`
+
+- **`url` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "id": "",
+  "url": "",
+  "contentType": "",
+  "size": 1,
+  "duplicate": true
+}
+```
+
+##### Status: 401 Missing or invalid API key
+
+###### Content-Type: application/json
+
+- **`error` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "error": ""
+}
+```
+
+##### Status: 413 File too large (max 10MB)
+
+###### Content-Type: application/json
+
+- **`error` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "error": ""
+}
+```
+
+##### Status: 415 Unsupported media type
+
+###### Content-Type: application/json
+
+- **`error` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "error": ""
+}
+```
+
+### SERVERS /upload
+
+- **Method:** `SERVERS`
+- **Path:** `/upload`
+
+### Retrieve media
+
+- **Method:** `GET`
+- **Path:** `/{hash}`
+- **Tags:** media.pollinations.ai
+
+Get a file by its content hash. No authentication required. Responses are cached immutably.
+
+#### Responses
+
+##### Status: 200 File content with appropriate Content-Type
+
+##### Status: 400 Invalid hash format
+
+###### Content-Type: application/json
+
+- **`error` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "error": ""
+}
+```
+
+##### Status: 404 File not found
+
+###### Content-Type: application/json
+
+- **`error` (required)**
+
+  `string`
+
+**Example:**
+
+```json
+{
+  "error": ""
+}
+```
+
+### Check if media exists
+
+- **Method:** `HEAD`
+- **Path:** `/{hash}`
+- **Tags:** media.pollinations.ai
+
+Check existence and metadata without downloading the file.
+
+#### Responses
+
+##### Status: 200 File exists (headers include Content-Type, Content-Length, X-Content-Hash)
+
+##### Status: 400 Invalid hash format
+
+##### Status: 404 File not found
+
+### SERVERS /{hash}
+
+- **Method:** `SERVERS`
+- **Path:** `/{hash}`
+
 ## Schemas
 
 ### ErrorDetails
